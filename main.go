@@ -25,24 +25,13 @@ var collection *mongo.Collection
 func main() {
 	fmt.Println("hello world")
 
-	// if os.Getenv("ENV") != "production" {
-	// 	// Load the .env file if not in production
-	// 	err := godotenv.Load(".env")
-	// 	if err != nil {
-	// 		log.Fatal("Error loading .env file:", err)
-	// 	}
-	// }
-
-
-	 app := fiber.New()
-
-    if os.Getenv("ENV") == "production" {
-        app.Static("/", "./client/dist")
-    } else {
-        app.Get("/", func(c *fiber.Ctx) error {
-            return c.SendString("API is running")
-        })
-    }
+	if os.Getenv("ENV") != "production" {
+		// Load the .env file if not in production
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading .env file:", err)
+		}
+	}
 
 	MONGODB_URI := os.Getenv("MONGODB_URI")
 	clientOptions := options.Client().ApplyURI(MONGODB_URI)
@@ -69,10 +58,6 @@ func main() {
 	// 	AllowOrigins: "http://localhost:5173",
 	// 	AllowHeaders: "Origin,Content-Type,Accept",
 	// }))
-	app.Get("/", func(c *fiber.Ctx) error {
-    return c.SendString("API is running")
-})
-
 
 	app.Get("/api/todos", getTodos)
 	app.Post("/api/todos", createTodo)
