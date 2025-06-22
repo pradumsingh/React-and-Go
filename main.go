@@ -58,6 +58,10 @@ func main() {
 	// 	AllowOrigins: "http://localhost:5173",
 	// 	AllowHeaders: "Origin,Content-Type,Accept",
 	// }))
+	app.Get("/", func(c *fiber.Ctx) error {
+    return c.SendString("API is running")
+})
+
 
 	app.Get("/api/todos", getTodos)
 	app.Post("/api/todos", createTodo)
